@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     height: 40,
     justifyContent: "center",
     alignItems: "center",
-    margin: 30
+    margin: 15
   },
   TextButtonLogout: {
     color: "#FFF"

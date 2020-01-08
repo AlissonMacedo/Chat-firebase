@@ -11,8 +11,8 @@ import {
 
 import styles from "../../styles";
 
-import firebase from 'firebase';
-import User from '../../../User';
+import firebase from "firebase";
+import User from "../../../User";
 
 export default class Login extends React.Component {
   state = {
@@ -36,7 +36,10 @@ export default class Login extends React.Component {
     } else {
       await AsyncStorage.setItem("user", this.state.phone);
       User.phone = this.state.phone;
-      firebase.database().ref('users/' + User.phone).set({ name: this.state.name });
+      firebase
+        .database()
+        .ref("users/" + User.phone)
+        .set({ name: this.state.name });
       this.props.navigation.navigate("Home");
     }
   };
@@ -60,7 +63,7 @@ export default class Login extends React.Component {
           onChangeText={this.handleChange("name")}
           style={styles.inputs}
         />
-        <TouchableOpacity onPress={this.submitForm} style={styles.button}>
+        <TouchableOpacity onPress={this.submitForm} style={styles.logOut}>
           <Text style={styles.TextButtonLogout}>Entrar</Text>
         </TouchableOpacity>
       </View>

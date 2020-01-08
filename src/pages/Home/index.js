@@ -3,21 +3,30 @@ import React from "react";
 import {
   View,
   Text,
+  Image,
   AsyncStorage,
   TouchableOpacity,
   FlatList,
   SafeAreaView
 } from "react-native";
 import firebase from "firebase";
-
+import profile from "../../assets/profile.png";
 import User from "../../../User";
 
 import styles from "../../styles";
 
 export default class Home extends React.Component {
-  static navigationOptions = () => {
+  static navigationOptions = ({ navigation }) => {
     return {
-      title: "Chat Firebase"
+      title: "Chat Firebase",
+      headerRight: (
+        <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
+          <Image
+            source={profile}
+            style={{ width: 32, height: 32, marginHorizontal: 7 }}
+          />
+        </TouchableOpacity>
+      )
     };
   };
   state = {

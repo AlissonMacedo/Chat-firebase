@@ -49,6 +49,17 @@ export default class ChatScreen extends React.Component {
     this.setState({ [key]: val });
   };
 
+  converTime = time => {
+    let d = new Date(time);
+    let c = new Date();
+    let result = (d.getHours() < 10 ? "0" : "") + d.getHours() + ":";
+    result += (d.getMinutes() < 10 ? "0" : "") + d.getMinutes();
+    if (c.getDate() !== d.getDate()) {
+      result = d.getDay() + " " + d.getMonth() + " " + result;
+    }
+    return result;
+  };
+
   sendMessage = async () => {
     if (this.state.textMessege.length > 0) {
       let msgId = firebase
@@ -82,7 +93,7 @@ export default class ChatScreen extends React.Component {
       <View
         style={{
           flexDirection: "row",
-          width: "60%",
+          maxWidth: "80%",
           alignSelf: item.from === User.phone ? "flex-end" : "flex-start",
           backgroundColor: item.from === User.phone ? "#00897b" : "#7cb342",
           borderRadius: 5,
@@ -93,7 +104,7 @@ export default class ChatScreen extends React.Component {
           {item.message}
         </Text>
         <Text style={{ color: "#eee", padding: 3, fontSize: 12 }}>
-          {item.time}
+          {this.converTime(item.time)}
         </Text>
       </View>
     );
