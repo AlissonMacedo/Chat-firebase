@@ -5,7 +5,8 @@ import {
   Text,
   TextInput,
   Alert,
-  TouchableOpacity
+  TouchableOpacity,
+  Image
 } from "react-native";
 
 import styles from "../../styles";
@@ -14,11 +15,7 @@ import User from "../../../User";
 
 import firebase from "firebase";
 
-export default class Perfil extends React.Component {
-  static navigationOptions = {
-    title: "Profile"
-  };
-
+export default class Profile extends React.Component {
   state = {
     name: User.name
   };
@@ -55,7 +52,26 @@ export default class Perfil extends React.Component {
         <TouchableOpacity onPress={this.changeName} style={styles.logOut}>
           <Text style={styles.TextButtonLogout}>Mudar Nome</Text>
         </TouchableOpacity>
+
+        <TouchableOpacity onPress={this._logOut} style={styles.logOut}>
+          <Text style={styles.TextButtonLogout}>SAIR</Text>
+        </TouchableOpacity>
       </SafeAreaView>
     );
   }
 }
+
+Profile.navigationOptions = {
+  title: "Profile",
+  tabBarLabel: "Profile",
+  tabBarIcon: ({ tintColor }) => (
+    <Image
+      source={require("../../assets/settings.png")}
+      style={{ width: 25, resizeMode: "contain", tintColor }}
+    />
+  ),
+  tabBarOptions: {
+    activeTintColor: "tomato",
+    inactiveTintColor: "gray"
+  }
+};

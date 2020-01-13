@@ -1,17 +1,25 @@
 import React from "react";
 import {
-  SafeAreaView,
+  KeyboardAvoidingView,
   View,
   Text,
   TextInput,
   TouchableOpacity,
   FlatList,
-  Dimensions
+  Dimensions,
+  Animated,
+  Platform,
+  Keyboard,
+  Image
 } from "react-native";
 
 import User from "../../../User";
 import firebase from "firebase";
 import styles from "../../styles";
+
+import imageSend from "../../assets/send.png";
+
+const isIOS = Platform.OS !== "ios";
 
 export default class ChatScreen extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -28,14 +36,25 @@ export default class ChatScreen extends React.Component {
         phone: props.navigation.getParam("phone")
       },
       textMessege: "",
-      messageList: ""
+      messageList: "",
+      dbRef: firebase.database().ref("messages")
     };
+    this.keyboardHeight = new Animated.Value(0);
+    this.bottomPadding = new Animated.Value(60);
   }
 
   componentDidMount() {
-    firebase
-      .database()
-      .ref("messages")
+    this.keyboardShowListener = Keyboard.addListener(
+      isIOS ? "KeyboardWillShow" : "keyboardDidShow",
+      e => this.keyboardEvent(e, true)
+    );
+
+    this.keyboardShowListener = Keyboard.addListener(
+      isIOS ? "keyboardWillHide" : "keyboardDidHide",
+      e => this.keyboardEvent(e, false)
+    );
+
+    this.state.dbRef
       .child(User.phone)
       .child(this.state.person.phone)
       .on("child_added", value => {
@@ -44,6 +63,26 @@ export default class ChatScreen extends React.Component {
         });
       });
   }
+
+  componentWillUnmount() {
+    this.state.dbRef.off();
+    this.keyboardShowListener.remove();
+  }
+
+  keyboardEvent = (event, isShow) => {
+    let heightOS = isIOS ? 60 : 60;
+    let bottomOS = isIOS ? 120 : 120;
+    Animated.parallel([
+      Animated.timing(this.keyboardHeight, {
+        duration: event.duration,
+        toValue: isShow ? heightOS : 0
+      }),
+      Animated.timing(this.bottomPadding, {
+        duration: event.duration,
+        toValue: isShow ? bottomOS : 60
+      })
+    ]).start();
+  };
 
   handleChange = key => val => {
     this.setState({ [key]: val });
@@ -62,9 +101,7 @@ export default class ChatScreen extends React.Component {
 
   sendMessage = async () => {
     if (this.state.textMessege.length > 0) {
-      let msgId = firebase
-        .database()
-        .ref("messages")
+      let msgId = this.state.dbRef
         .child(User.phone)
         .child(this.state.person.phone)
         .push().key;
@@ -75,15 +112,12 @@ export default class ChatScreen extends React.Component {
         from: User.phone
       };
       updates[
-        "messages/" + User.phone + "/" + this.state.person.phone + "/" + msgId
+        User.phone + "/" + this.state.person.phone + "/" + msgId
       ] = message;
       updates[
-        "messages/" + this.state.person.phone + "/" + User.phone + "/" + msgId
+        this.state.person.phone + "/" + User.phone + "/" + msgId
       ] = message;
-      firebase
-        .database()
-        .ref()
-        .update(updates);
+      this.state.dbRef.update(updates);
       this.setState({ textMessege: "" });
     }
   };
@@ -100,28 +134,38 @@ export default class ChatScreen extends React.Component {
           marginBottom: 10
         }}
       >
-        <Text style={{ color: "#fff", padding: 7, fontSize: 16 }}>
-          {item.message}
-        </Text>
-        <Text style={{ color: "#eee", padding: 3, fontSize: 12 }}>
-          {this.converTime(item.time)}
-        </Text>
+        <View style={{ flexDirection: "column", maxWidth: "100%" }}>
+          <View style={{ flexDirection: "row" }}>
+            <Text style={{ color: "#fff", padding: 7, fontSize: 16 }}>
+              {item.message}
+            </Text>
+          </View>
+          <View style={{ flexDirection: "row", alignSelf: "flex-end" }}>
+            <Text
+              style={{
+                color: "#eee",
+                padding: 3,
+                paddingLeft: 30,
+                marginTop: -10,
+                fontSize: 12
+              }}
+            >
+              {this.converTime(item.time)}
+            </Text>
+          </View>
+        </View>
       </View>
     );
   };
 
   render() {
-    let { height, width } = Dimensions.get("window");
+    let { height } = Dimensions.get("window");
 
     return (
-      <SafeAreaView style={styles.container}>
-        <FlatList
-          style={{ padding: 10, height: height * 0.8, width: "100%" }}
-          data={this.state.messageList}
-          renderItem={this.renderRow}
-          keyExtractor={(item, index) => index.toString()}
-        />
-        <View style={styles.ViewSendMessege}>
+      <KeyboardAvoidingView behavior="height" style={{ flex: 1 }}>
+        <Animated.View
+          style={[styles.ViewSendMessege, { bottom: this.keyboardHeight }]}
+        >
           <TextInput
             style={styles.InputChat}
             value={this.state.textMessege}
@@ -130,12 +174,35 @@ export default class ChatScreen extends React.Component {
           />
           <TouchableOpacity
             onPress={this.sendMessage}
-            style={styles.buttonSend}
+            style={[styles.buttonSend, { borderRadius: 20, paddingRight: 5 }]}
           >
-            <Text style={styles.TextButtonLogout}>Send</Text>
+            <Image
+              source={imageSend}
+              style={{
+                width: 20,
+                height: 20,
+                resizeMode: "contain",
+                tintColor: "#FFF"
+              }}
+            />
           </TouchableOpacity>
-        </View>
-      </SafeAreaView>
+        </Animated.View>
+
+        <FlatList
+          ref={ref => (this.flatList = ref)}
+          onContentSizeChange={() =>
+            this.flatList.scrollToEnd({ animated: true })
+          }
+          onLayout={() => this.flatList.scrollToEnd({ animated: true })}
+          style={{ paddingTop: 5, paddingHorizontal: 5, height }}
+          data={this.state.messageList}
+          renderItem={this.renderRow}
+          keyExtractor={(item, index) => index.toString()}
+          ListFooterComponent={
+            <Animated.View style={{ height: this.bottomPadding }} />
+          }
+        />
+      </KeyboardAvoidingView>
     );
   }
 }

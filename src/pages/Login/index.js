@@ -16,8 +16,8 @@ import User from "../../../User";
 
 export default class Login extends React.Component {
   state = {
-    phone: "",
-    name: ""
+    name: "",
+    phone: ""
   };
 
   handleChange = key => val => {
@@ -47,20 +47,22 @@ export default class Login extends React.Component {
   render() {
     return (
       <View style={styles.container}>
+        <Text>Login</Text>
         <TextInput
           keyboardType="number-pad"
-          placeholder="Número de telefone"
-          placeholderTextColor="#999"
-          value={this.state.phone}
-          onChangeText={this.handleChange("phone")}
-          style={styles.inputs}
-        />
-        <TextInput
-          keyboardType="number-pad"
-          placeholder="Número de telefone"
+          placeholder="nome"
           placeholderTextColor="#999"
           value={this.state.name}
           onChangeText={this.handleChange("name")}
+          style={styles.inputs}
+        />
+
+        <TextInput
+          keyboardType="number-pad"
+          placeholder="phone"
+          placeholderTextColor="#999"
+          value={this.state.phone}
+          onChangeText={this.handleChange("phone")}
           style={styles.inputs}
         />
         <TouchableOpacity onPress={this.submitForm} style={styles.logOut}>

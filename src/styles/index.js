@@ -36,23 +36,28 @@ const styles = StyleSheet.create({
     color: "#FFF"
   },
   ViewSendMessege: {
+    backgroundColor: "#FFF",
     flexDirection: "row",
-    marginHorizontal: 5,
-    justifyContent: "center",
     alignItems: "center",
-    height: 40,
-    marginBottom: 10
+    position: "absolute",
+    padding: 6,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    zIndex: 2,
+    height: 60
   },
   InputChat: {
-    width: "70%",
+    flex: 1,
     height: 40,
     borderWidth: 1,
-    borderColor: "#DDD",
+    borderColor: "#ccc",
     paddingHorizontal: 10,
-    marginHorizontal: 5
+    marginHorizontal: 5,
+    borderRadius: 20
   },
   buttonSend: {
-    width: "20%",
+    width: 40,
     height: 40,
     justifyContent: "center",
     alignItems: "center",
