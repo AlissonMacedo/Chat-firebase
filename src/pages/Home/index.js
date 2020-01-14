@@ -28,6 +28,7 @@ export default class Home extends React.Component {
       person.phone = val.key;
       if (person.phone === User.phone) {
         User.name = person.name;
+        User.image = person.image ? person.image : null;
       } else {
         this.setState(prevState => {
           return {
@@ -42,21 +43,30 @@ export default class Home extends React.Component {
     this.state.dbRef.off();
   }
 
-  _logOut = async () => {
-    await AsyncStorage.clear();
-    this.props.navigation.navigate("Auth");
-  };
-
   renderRow = ({ item }) => {
     return (
       <TouchableOpacity
         onPress={() => this.props.navigation.navigate("Chat", item)}
         style={{
+          flexDirection: "row",
+          alignItems: "center",
           padding: 10,
           borderBottomColor: "#ccc",
           borderBottomWidth: 1
         }}
       >
+        <Image
+          source={
+            item.image ? { uri: item.image } : require("../../assets/user.png")
+          }
+          style={{
+            width: 32,
+            height: 32,
+            resizeMode: "cover",
+            borderRadius: 32,
+            marginRight: 5
+          }}
+        />
         <Text style={{ fontSize: 20 }}>{item.name}</Text>
       </TouchableOpacity>
     );

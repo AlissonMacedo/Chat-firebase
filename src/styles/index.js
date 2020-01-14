@@ -30,7 +30,8 @@ const styles = StyleSheet.create({
     height: 40,
     justifyContent: "center",
     alignItems: "center",
-    margin: 15
+    margin: 10,
+    borderRadius: 4
   },
   TextButtonLogout: {
     color: "#FFF"
@@ -62,7 +63,18 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#7159c1",
-    marginHorizontal: 5
+    marginHorizontal: 5,
+    borderRadius: 4
+  },
+  buttonSair: {
+    width: 200,
+    height: 40,
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 30,
+    borderWidth: 1,
+    borderColor: "tomato",
+    borderRadius: 4
   }
 });
 

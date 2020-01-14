@@ -49,7 +49,7 @@ export default class ChatScreen extends React.Component {
       e => this.keyboardEvent(e, true)
     );
 
-    this.keyboardShowListener = Keyboard.addListener(
+    this.keyboardHideListener = Keyboard.addListener(
       isIOS ? "keyboardWillHide" : "keyboardDidHide",
       e => this.keyboardEvent(e, false)
     );
@@ -67,6 +67,7 @@ export default class ChatScreen extends React.Component {
   componentWillUnmount() {
     this.state.dbRef.off();
     this.keyboardShowListener.remove();
+    this.keyboardHideListener.remove();
   }
 
   keyboardEvent = (event, isShow) => {

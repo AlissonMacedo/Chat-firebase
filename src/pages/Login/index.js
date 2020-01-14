@@ -1,6 +1,7 @@
 import React from "react";
 
 import {
+  KeyboardAvoidingView,
   Text,
   Alert,
   AsyncStorage,
@@ -46,11 +47,13 @@ export default class Login extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
+      <KeyboardAvoidingView style={styles.container}>
         <Text>Login</Text>
         <TextInput
-          keyboardType="number-pad"
-          placeholder="nome"
+          keyboardType="default"
+          placeholder="Digite seu nome..."
+          autoCorrect={false}
+          autoCapitalize="sentences"
           placeholderTextColor="#999"
           value={this.state.name}
           onChangeText={this.handleChange("name")}
@@ -59,16 +62,17 @@ export default class Login extends React.Component {
 
         <TextInput
           keyboardType="number-pad"
-          placeholder="phone"
+          placeholder="Digite seu telefone..."
           placeholderTextColor="#999"
           value={this.state.phone}
           onChangeText={this.handleChange("phone")}
           style={styles.inputs}
+          returnKeyType="send"
         />
         <TouchableOpacity onPress={this.submitForm} style={styles.logOut}>
           <Text style={styles.TextButtonLogout}>Entrar</Text>
         </TouchableOpacity>
-      </View>
+      </KeyboardAvoidingView>
     );
   }
 }
