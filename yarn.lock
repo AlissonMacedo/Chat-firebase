@@ -4786,6 +4786,11 @@ react-native-image-picker@^2.0.0:
   resolved "https://registry.yarnpkg.com/react-native-image-picker/-/react-native-image-picker-2.0.0.tgz#237f08109ec6824607de2458847700242186bd2a"
   integrity sha512-svmQJ5bBuCgX9RG5DU3A38udgemze1/HtYUXgUAvP2i3LzrzW5ub5GT3L8n87pg/DNj2rRHi1wLtNaNEoV4ZAw==
 
+react-native-iphone-x-helper@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/react-native-iphone-x-helper/-/react-native-iphone-x-helper-1.2.1.tgz#645e2ffbbb49e80844bb4cbbe34a126fda1e6772"
+  integrity sha512-/VbpIEp8tSNNHIvstuA3Swx610whci1Zpc9mqNkqn14DkMbw+ORviln2u0XyHG1kPvvwTNGZY6QpeFwxYaSdbQ==
+
 react-native-reanimated@~1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/react-native-reanimated/-/react-native-reanimated-1.4.0.tgz#7f1acbf9be08492d834f512700570978052be2f9"

@@ -15,6 +15,7 @@ import profile from "../../assets/profile.png";
 import User from "../../../User";
 
 import styles from "../../styles";
+console.ignoredYellowBox = ["Warning:"];
 
 export default class Home extends React.Component {
   state = {
@@ -22,7 +23,11 @@ export default class Home extends React.Component {
     dbRef: firebase.database().ref("users")
   };
 
+  _isMounted = false;
+
   componentDidMount() {
+    this._isMounted = true;
+
     this.state.dbRef.on("child_added", val => {
       let person = val.val();
       person.phone = val.key;
@@ -40,6 +45,7 @@ export default class Home extends React.Component {
   }
 
   componentWillUnmount() {
+    this._isMounted = false;
     this.state.dbRef.off();
   }
 

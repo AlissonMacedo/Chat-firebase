@@ -1,6 +1,7 @@
 import react from "react";
 
 import { StyleSheet } from "react-native";
+import { ifIphoneX } from "react-native-iphone-x-helper";
 
 const styles = StyleSheet.create({
   container: {
@@ -46,7 +47,15 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     zIndex: 2,
-    height: 60
+    height: 60,
+    ...ifIphoneX(
+      {
+        marginBottom: 20
+      },
+      {
+        marginBottom: 0
+      }
+    )
   },
   InputChat: {
     flex: 1,

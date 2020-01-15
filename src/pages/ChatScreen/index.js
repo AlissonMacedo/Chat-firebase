@@ -19,8 +19,8 @@ import styles from "../../styles";
 
 import imageSend from "../../assets/send.png";
 
-const isIOS = Platform.OS !== "ios";
-
+const isIOS = false;
+console.ignoredYellowBox = ["Warning:"];
 export default class ChatScreen extends React.Component {
   static navigationOptions = ({ navigation }) => {
     return {
@@ -43,7 +43,10 @@ export default class ChatScreen extends React.Component {
     this.bottomPadding = new Animated.Value(60);
   }
 
+  _isMounted = false;
+
   componentDidMount() {
+    this._isMounted = true;
     this.keyboardShowListener = Keyboard.addListener(
       isIOS ? "KeyboardWillShow" : "keyboardDidShow",
       e => this.keyboardEvent(e, true)
@@ -65,14 +68,15 @@ export default class ChatScreen extends React.Component {
   }
 
   componentWillUnmount() {
+    this._isMounted = false;
     this.state.dbRef.off();
     this.keyboardShowListener.remove();
     this.keyboardHideListener.remove();
   }
 
   keyboardEvent = (event, isShow) => {
-    let heightOS = isIOS ? 60 : 60;
-    let bottomOS = isIOS ? 120 : 120;
+    let heightOS = isIOS ? 80 : 70;
+    let bottomOS = isIOS ? 160 : 160;
     Animated.parallel([
       Animated.timing(this.keyboardHeight, {
         duration: event.duration,
@@ -163,7 +167,11 @@ export default class ChatScreen extends React.Component {
     let { height } = Dimensions.get("window");
 
     return (
-      <KeyboardAvoidingView behavior="height" style={{ flex: 1 }}>
+      <KeyboardAvoidingView
+        enabled={true}
+        behavior="height"
+        style={{ flex: 1 }}
+      >
         <Animated.View
           style={[styles.ViewSendMessege, { bottom: this.keyboardHeight }]}
         >
