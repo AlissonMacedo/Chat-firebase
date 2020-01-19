@@ -7,10 +7,13 @@ import {
   AsyncStorage,
   TouchableOpacity,
   TextInput,
-  View
+  View,
+  Image
 } from "react-native";
 
 import styles from "../../styles";
+
+import logo from "../../assets/logo-app.png";
 
 import firebase from "firebase";
 import User from "../../../User";
@@ -48,6 +51,10 @@ export default class Login extends React.Component {
   render() {
     return (
       <KeyboardAvoidingView style={styles.container}>
+        <Image
+          source={logo}
+          style={{ width: 80, height: 80, marginBottom: 50 }}
+        />
         <Text>Login</Text>
         <TextInput
           keyboardType="default"

@@ -21,7 +21,15 @@ const AppStack = createStackNavigator({
   Profile: Profile
 });
 
-const AuthStack = createStackNavigator({ Login, CreateAccount });
+const AuthStack = createStackNavigator({
+  Login: {
+    screen: Login,
+    navigationOptions: {
+      header: null
+    }
+  },
+  CreateAccount
+});
 
 AppStack.navigationOptions = ({ navigation }) => {
   let tabBarVisible = navigation.state.index === 0;
